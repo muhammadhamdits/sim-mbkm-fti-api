@@ -1,4 +1,4 @@
-const { Admin } = require('../model/admin')
+const Admin = require('../models/Admin')
 const jwt = require('jsonwebtoken')
 const dontenv = require('dotenv')
 
@@ -12,3 +12,14 @@ const createToken = (id, role) => {
   ) 
 }
 
+const index = async (req, res) => {
+  const admin = await Admin.create({
+    name: "tes",
+    username: "tes",
+    password: "tes"
+  })
+
+  res.send('done')
+}
+
+module.exports = { index }

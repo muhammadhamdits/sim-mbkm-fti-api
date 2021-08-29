@@ -1,0 +1,30 @@
+const Admin = require('../models/Admin')
+const Student = require('../models/Student')
+const Lecturer = require('../models/Lecturer')
+const Course = require('../models/Course')
+const Agency = require('../models/Agency')
+const ProgramType = require('../models/ProgramType')
+const Program = require('../models/Program')
+const ProgramCourse = require('../models/ProgramCourse')
+const StudentProgram = require('../models/StudentProgram')
+const StudentProgramCourse = require('../models/StudentProgramCourse')
+const Logbook = require('../models/Logbook')
+const Comment = require('../models/Comment')
+
+const initDB = async (alter = false) => {
+  await Admin.sync({ alter })
+  await Student.sync({ alter })
+  await Lecturer.sync({ alter })
+  await Course.sync({ alter })
+  await Agency.sync({ alter })
+  await ProgramType.sync({ alter })
+  await Program.sync({ alter })
+  await ProgramCourse.sync({ alter })
+  await StudentProgram.sync({ alter })
+  await StudentProgramCourse.sync({ alter })
+  await Logbook.sync({ alter })
+  await Comment.sync({ alter })
+  console.log("Database initiated successfully")
+}
+
+module.exports = initDB
