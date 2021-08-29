@@ -1,7 +1,8 @@
 const dotenv = require('dotenv')
 const express = require('express')
+const cookieParser = require('cookie-parser')
 
-const initDB = require('./database/init')
+// const initDB = require('./database/init')
 const authRoutes = require('./routes/auth')
 
 dotenv.config()
@@ -9,8 +10,9 @@ dotenv.config()
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
-initDB(false)
+// initDB(false)
 
 app.use(authRoutes)
 
