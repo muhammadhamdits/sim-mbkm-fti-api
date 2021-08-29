@@ -1,0 +1,18 @@
+{
+  "table": "program_types",
+  "fields": [
+    {
+      "name": "program_type_id",
+      "type": "INT",
+      "options": [ "NOT NULL", "AUTO_INCREMENT" ]
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR(30)",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "program_type_id" ],
+  "unique": [],
+  "foreign": []
+}

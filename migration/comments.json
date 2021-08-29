@@ -1,0 +1,41 @@
+{
+  "table": "comments",
+  "fields": [
+    {
+      "name": "comment_id",
+      "type": "INT",
+      "options": [ "NOT NULL", "AUTO_INCREMENT" ]
+    },
+    {
+      "name": "comment",
+      "type": "VARCHAR(255)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "is_lecturer",
+      "type": "BOOLEAN",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "timestamp",
+      "type": "TIMESTAMP",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "student_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "program_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "comment_id" ],
+  "unique": [],
+  "foreign": [
+    { "key": "student_id", "ref": "logbooks" },
+    { "key": "program_id", "ref": "logbooks" }
+  ]
+}

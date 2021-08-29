@@ -1,0 +1,28 @@
+{
+  "table": "lecturers",
+  "fields": [
+    {
+      "name": "lecturer_id",
+      "type": "INT",
+      "options": [ "NOT NULL", "AUTO_INCREMENT" ]
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR(30)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "nip",
+      "type": "VARCHAR(20)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "password",
+      "type": "VARCHAR(255)",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "lecturer_id" ],
+  "unique": [ "nip" ],
+  "foreign": []
+}

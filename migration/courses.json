@@ -1,0 +1,23 @@
+{
+  "table": "courses",
+  "fields": [
+    {
+      "name": "course_id",
+      "type": "INT",
+      "options": [ "NOT NULL", "AUTO_INCREMENT" ]
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR(30)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "sks",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "course_id" ],
+  "unique": [],
+  "foreign": []
+}

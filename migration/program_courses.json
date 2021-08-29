@@ -1,0 +1,21 @@
+{
+  "table": "program_courses",
+  "fields": [
+    {
+      "name": "program_id",
+      "type": "INT",
+      "options": [ "NOT NULL"]
+    },
+    {
+      "name": "course_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "program_id", "course_id" ],
+  "unique": [],
+  "foreign": [
+    { "key": "program_id", "ref": "programs" },
+    { "key": "course_id", "ref": "courses" }
+  ]
+}

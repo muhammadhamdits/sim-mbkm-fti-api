@@ -1,0 +1,47 @@
+{
+  "table": "student_programs",
+  "fields": [
+    {
+      "name": "student_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "program_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "lecturer_id",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "status",
+      "type": "INT",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "accepted_mark_file",
+      "type": "VARCHAR(255)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "completed_mark_file",
+      "type": "VARCHAR(255)",
+      "options": [ "NOT NULL" ]
+    },
+    {
+      "name": "transcript_file",
+      "type": "VARCHAR(255)",
+      "options": [ "NOT NULL" ]
+    }
+  ],
+  "primary": [ "student_id", "program_id" ],
+  "unique": [],
+  "foreign": [
+    { "key": "student_id", "ref": "students" },
+    { "key": "program_id", "ref": "programs" },
+    { "key": "lecturer_id", "ref": "lecturers" }
+  ]
+}
