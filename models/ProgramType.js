@@ -9,7 +9,9 @@ ProgramType.init(
   {
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
+      validate: { notEmpty: true }
     }
   },
   {
