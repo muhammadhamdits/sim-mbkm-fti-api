@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth')
 const typeRoutes = require('./routes/type')
 const agencyRoutes = require('./routes/agency')
 const courseRoutes = require('./routes/course')
+const programRoutes = require('./routes/program')
 
 dotenv.config()
 
@@ -15,12 +16,13 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-initDB(false)
+// initDB(false)
 
 app.use(authRoutes)
 app.use(typeRoutes)
 app.use(agencyRoutes)
 app.use(courseRoutes)
+app.use(programRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`App listening at http://localhost:${process.env.PORT}`)
