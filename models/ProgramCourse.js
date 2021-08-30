@@ -16,7 +16,12 @@ ProgramCourse.init(
         key: 'id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex'
+      primaryKey: 'compositeIndex',
+      validate: { 
+        notEmpty: { msg: "Program cannot be empty, please input this field!" },
+        notNull: { msg: "Program cannot be empty, please input this field!" },
+        isInt: { msg: "Program invalid! Please input valid data!" }
+      }
     },
     course_id: {
       type: DataTypes.INTEGER,
@@ -25,7 +30,12 @@ ProgramCourse.init(
         key: 'id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex'
+      primaryKey: 'compositeIndex',
+      validate: { 
+        notEmpty: { msg: "Course cannot be empty, please input this field!" },
+        notNull: { msg: "Course cannot be empty, please input this field!" },
+        isInt: { msg: "Course invalid! Please input valid data!" }
+      }
     }
   },
   {
