@@ -9,7 +9,12 @@ Agency.init(
   {
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: { msg: "This name already registered, please input another!" },
+      validate: { 
+        notEmpty: { msg: "Name cannot be empty, please input this field!" },
+        notNull: { msg: "Name cannot be empty, please input this field!" }
+      }
     },
     address: DataTypes.STRING
   },
