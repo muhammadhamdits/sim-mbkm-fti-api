@@ -16,7 +16,12 @@ StudentProgramCourse.init(
         key: 'student_id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex'
+      primaryKey: 'compositeIndex',
+      validate: { 
+        notEmpty: { msg: "Student cannot be empty, please input this field!" },
+        notNull: { msg: "Student cannot be empty, please input this field!" },
+        isInt: { msg: "Student invalid! Please input valid data!" }
+      }
     },
     program_id: {
       type: DataTypes.INTEGER,
@@ -25,7 +30,12 @@ StudentProgramCourse.init(
         key: 'program_id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex'
+      primaryKey: 'compositeIndex',
+      validate: { 
+        notEmpty: { msg: "Program cannot be empty, please input this field!" },
+        notNull: { msg: "Program cannot be empty, please input this field!" },
+        isInt: { msg: "Program invalid! Please input valid data!" }
+      }
     },
     // program_id: {
     //   type: DataTypes.INTEGER,
@@ -43,15 +53,28 @@ StudentProgramCourse.init(
         key: 'course_id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex'
+      primaryKey: 'compositeIndex',
+      validate: { 
+        notEmpty: { msg: "Course cannot be empty, please input this field!" },
+        notNull: { msg: "Course cannot be empty, please input this field!" },
+        isInt: { msg: "Course invalid! Please input valid data!" }
+      }
     },
     score: {
       type: DataTypes.INTEGER,
-      defaultValue: null
+      defaultValue: null,
+      validate: { 
+        isInt: { msg: "Score invalid! Please input valid data!" },
+        minVal(value){ if(value < 0) throw new Error("Score value min 0. Please input valid value!") },
+        max: { args: 100, msg: "Score value max 100. Please input valid value!" }
+      }
     },
     is_accepted: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
+      validate: {
+        isBoolean: { msg: "Invalid data type provided! Value must be true or false" }
+      }
     }
   },
   {
