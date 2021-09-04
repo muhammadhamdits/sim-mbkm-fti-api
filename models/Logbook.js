@@ -15,7 +15,6 @@ Logbook.init(
         key: 'student_id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex',
       validate: { 
         notEmpty: { msg: "Student cannot be empty, please input this field!" },
         notNull: { msg: "Student cannot be empty, please input this field!" },
@@ -29,7 +28,6 @@ Logbook.init(
         key: 'program_id'
       },
       allowNull: false,
-      primaryKey: 'compositeIndex',
       validate: { 
         notEmpty: { msg: "Program cannot be empty, please input this field!" },
         notNull: { msg: "Program cannot be empty, please input this field!" },
@@ -40,7 +38,6 @@ Logbook.init(
       type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-      primaryKey: 'compositeIndex',
       validate: { 
         notEmpty: { msg: "Start date cannot be empty, please input this field!" },
         isDate: { msg: "Invalid data type provided! Start date must be date!" }
@@ -48,18 +45,23 @@ Logbook.init(
     },
     log: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    validate: { 
-      notEmpty: { msg: "Program cannot be empty, please input this field!" },
-      notNull: { msg: "Program cannot be empty, please input this field!" }
+      allowNull: false,
+      validate: { 
+        notEmpty: { msg: "Program cannot be empty, please input this field!" },
+        notNull: { msg: "Program cannot be empty, please input this field!" }
+      }
     }
-    
   },
   {
     sequelize: db,
     modelName: 'Logbook',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        unique: true,
+        fields: ['student_id', 'program_id', 'date']
+      }
+    ]
   }
 )
 

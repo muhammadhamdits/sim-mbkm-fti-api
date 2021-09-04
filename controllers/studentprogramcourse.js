@@ -42,7 +42,7 @@ const update = async (req, res) => {
   }
 }
 
-const destroy = (req, res) => {
+const destroy = async (req, res) => {
   const student_id = req.params.studentId
   const program_id = req.params.programId
   const course_id = req.params.courseId

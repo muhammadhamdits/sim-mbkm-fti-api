@@ -8,42 +8,17 @@ class Comment extends Model {
 
 Comment.init(
   {
-    student_id: {
+    logbook_id: {
       type: DataTypes.INTEGER,
       references: {
         model: Logbook,
-        key: 'student_id'
+        key: 'id'
       },
       allowNull: false,
       validate: { 
         notEmpty: { msg: "Student cannot be empty, please input this field!" },
         notNull: { msg: "Student cannot be empty, please input this field!" },
         isInt: { msg: "Student invalid! Please input valid data!" }
-      }
-    },
-    program_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Logbook,
-        key: 'program_id'
-      },
-      allowNull: false,
-      validate: { 
-        notEmpty: { msg: "Program cannot be empty, please input this field!" },
-        notNull: { msg: "Program cannot be empty, please input this field!" },
-        isInt: { msg: "Program invalid! Please input valid data!" }
-      }
-    },
-    date: {
-      type: DataTypes.DATEONLY,
-      references: {
-        model: Logbook,
-        key: 'date'
-      },
-      allowNull: false,
-      validate: { 
-        notEmpty: { msg: "Start date cannot be empty, please input this field!" },
-        isDate: { msg: "Invalid data type provided! Start date must be date!" }
       }
     },
     comment: {
