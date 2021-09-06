@@ -6,7 +6,7 @@ const Course = require('../models/Course')
 const index = async (req, res) => {
   const program_id = req.params.programId
   const programCourse = await ProgramCourse.findAll({ where: { program_id } })
-  res.send(programCourse)
+  res.json(programCourse)
 }
 
 const create = async (req, res) => {
@@ -17,13 +17,13 @@ const create = async (req, res) => {
     if(programCourse){
       const program = await Program.findOne({ where: { id: program_id } })
       const course = await Course.findOne({ where: { id: course_id } })
-      res.send({ success: `Successfully adds ${course.name} into ${program.name} program.` })
+      res.json({ success: `Successfully adds ${course.name} into ${program.name} program.` })
     }else{
-      res.send("failed")
+      res.json("failed")
     }
   } catch (e) {
     const errorMessage = errorHandling(e)
-    res.send(errorMessage)
+    res.json(errorMessage)
   }
 }
 
@@ -35,7 +35,7 @@ const destroy = async (req, res) => {
   else {
     const program = await Program.findOne({ where: { id: program_id }})
     const course = await Course.findOne({ where: { id: course_id }})
-    res.send({ success: `Successfully deletes course ${course.name} from program ${program.name}.` })
+    res.json({ success: `Successfully deletes course ${course.name} from program ${program.name}.` })
   }
 }
 
