@@ -5,7 +5,13 @@ const Program = require('./Program');
 const Student = require('./Student');
 
 class StudentProgram extends Model {
+  program;
+  supervisor;
 
+  async init(){
+    this.program = await Program.findOne({ where: { id: this.program_id } })
+    this.supervisor = await Lecturer.findOne({ where: { id: this.lecturer_id } })
+  }
 }
 
 StudentProgram.init(

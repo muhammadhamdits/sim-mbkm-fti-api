@@ -3,8 +3,27 @@ const { errorHandling } = require('../database/utils')
 const ProgramCourse = require('../models/ProgramCourse')
 
 const index = async (req, res) => {
-  const program = await Program.findAll()
-  res.json(program)
+  const programs = await Program.findAll()
+  var allPrograms = []
+  var tempCourses = []
+  await Promise.all(programs.map(async (program) => {
+    await program.type()
+    await program.getAgency()
+    await program.getCourses()
+    
+    let tempDataObject = program.dataValues
+    tempCourses = []
+
+    await Promise.all(program.courses.map(async (course) => {
+      tempCourses.push(course.dataValues)
+    }))
+    tempDataObject.program_type = program.program_type.dataValues
+    tempDataObject.agency = program.agency.dataValues
+    tempDataObject.courses = tempCourses
+
+    allPrograms.push(tempDataObject)
+  }))
+  res.json(allPrograms)
 }
 
 const create = async (req, res) => {

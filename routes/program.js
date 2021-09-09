@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth')
 
 const router = new Router()
 
-router.get('/program', auth.checkRole(["Admin"]), program.index)
+router.get('/program', auth.checkRole(["Admin", "Student"]), program.index)
 router.post('/program', auth.checkRole(["Admin"]), program.create)
 router.get('/program/:programId', auth.checkRole(["Admin"]), program.show)
 router.put('/program/:programId', auth.checkRole(["Admin"]), program.update)

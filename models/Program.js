@@ -1,10 +1,16 @@
 const { DataTypes, Model } = require('sequelize')
 const db = require('../database/db')
 const Agency = require('./Agency')
+const Course = require('./Course')
+const ProgramCourse = require('./ProgramCourse')
 const ProgramType = require('./ProgramType')
 
 class Program extends Model {
-
+  async init(){
+    await this.type()
+    await this.getAgency()
+    await this.getCourses()
+  }
 }
 
 Program.init(
@@ -109,5 +115,24 @@ Program.init(
     timestamps: false
   }
 )
+
+Program.program_type = {}
+Program.agency = {}
+Program.courses = []
+
+Program.prototype.type = async function(){
+  this.program_type = await ProgramType.findOne({ where: { id: this.program_type_id } })
+}
+Program.prototype.getAgency = async function(){
+  this.agency = await Agency.findOne({ where: { id: this.agency_id } })
+}
+Program.prototype.getCourses = async function(){
+  let programCourses = await ProgramCourse.findAll({ where: { program_id: this.id } })
+  let tempCourses = []
+  await Promise.all(programCourses.map(async (programCourse) => {
+    tempCourses.push(await Course.findOne({ where: { id: programCourse.course_id } }))
+  }))
+  this.courses = tempCourses
+}
 
 module.exports = Program

@@ -6,7 +6,28 @@ const Student = require('../models/Student')
 const index = async (req, res) => {
   const student_id = req.params.studentId
   const studentPrograms = await StudentProgram.findAll({ where: { student_id } })
-  res.send(studentPrograms)
+  var tempDatas = []
+  await Promise.all(studentPrograms.map(async studentProgram => {
+    await studentProgram.init()
+    await studentProgram.program.init()
+
+    let tempData = studentProgram.dataValues
+    var tempCourses = []
+
+    tempData.program = studentProgram.program.dataValues
+    tempData.program.program_type = studentProgram.program.program_type.dataValues
+    tempData.program.agency = studentProgram.program.agency.dataValues
+
+    studentProgram.program.courses.forEach(course => {
+      tempCourses.push(course.dataValues)
+    })
+    tempData.program.courses = tempCourses
+
+    if(studentProgram.supervisor) tempData.supervisor = studentProgram.supervisor.name
+    else tempData.supervisor = "-"
+    tempDatas.push(tempData)
+  }))
+  res.json(tempDatas)
 }
 
 const create = async (req, res) => {
@@ -17,13 +38,14 @@ const create = async (req, res) => {
     if(studentProgram){
       const program = await Program.findOne({ where: { id: data.program_id } })
       const student = await Student.findOne({ where: { id: data.student_id } })
-      res.send({ success: `Successfully registered ${program.name} program into student ${student.name}` })
+      res.json({ success: `Successfully registered ${program.name} program into student ${student.name}` })
     }else{
-      res.send("failed")
+      res.json({ failed: "Failed" })
     }
   } catch (e) {
+    // console.log(e)
     const errorMessage = errorHandling(e)
-    res.send(errorMessage)
+    res.json(errorMessage)
   }
 }
 
