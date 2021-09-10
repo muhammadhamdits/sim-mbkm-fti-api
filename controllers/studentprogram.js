@@ -3,9 +3,8 @@ const { errorHandling } = require('../database/utils')
 const Program = require('../models/Program')
 const Student = require('../models/Student')
 
-const index = async (req, res) => {
-  const student_id = req.params.studentId
-  const studentPrograms = await StudentProgram.findAll({ where: { student_id } })
+const getStudentPrograms = async (opt = {}) => {
+  const studentPrograms = await StudentProgram.findAll(opt)
   var tempDatas = []
   await Promise.all(studentPrograms.map(async studentProgram => {
     await studentProgram.init()
@@ -23,11 +22,30 @@ const index = async (req, res) => {
     })
     tempData.program.courses = tempCourses
 
+    tempData.student = studentProgram.student.dataValues
     if(studentProgram.supervisor) tempData.supervisor = studentProgram.supervisor.name
     else tempData.supervisor = "-"
+
+    if(tempData.status === 0) tempData.status = 'Proposed'
+    else if(tempData.status === 1) tempData.status = 'Accepted'
+    else if(tempData.status === 2) tempData.status = 'Rejected'
+    else if(tempData.status === 3) tempData.status = 'Active'
+    else if(tempData.status === 4) tempData.status = 'Ended'
+
     tempDatas.push(tempData)
   }))
-  res.json(tempDatas)
+  return tempDatas
+}
+
+const getAll = async (req, res) => {
+  let studentProgramDatas = await getStudentPrograms()
+  res.json(studentProgramDatas)
+}
+
+const index = async (req, res) => {
+  const student_id = req.params.studentId
+  let studentProgramDatas = await getStudentPrograms({ where: { student_id } })
+  res.json(studentProgramDatas)
 }
 
 const create = async (req, res) => {
@@ -74,4 +92,4 @@ const update = async (req, res) => {
   }
 }
 
-module.exports = { index, create, show, update }
+module.exports = { getAll, index, create, show, update }
