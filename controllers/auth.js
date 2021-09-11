@@ -43,4 +43,9 @@ const logout = (req, res, next) => {
   res.send('logout')
 }
 
-module.exports = { login, logout }
+const getAllLecturer = async (req, res) => {
+  let lecturers = await Lecturer.findAll()
+  res.json(lecturers)
+}
+
+module.exports = { login, logout, getAllLecturer }

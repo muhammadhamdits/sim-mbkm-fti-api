@@ -12,7 +12,8 @@ const checkRole = roles => {
         if(err){
           res.json({ status: "Failed", message: "Token invalid/expired" })
         }else{
-          if(roles.find(role => { return role === decodedToken.role })) next()
+          // roles.find(role => { console.log(role === decodedToken.role) })
+          if(roles.find(role => { return role == decodedToken.role })) next()
           else res.json({ status: "Failed", message: "Unauthorized" })
         }
       })

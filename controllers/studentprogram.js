@@ -12,7 +12,15 @@ const getStudentPrograms = async (opt = {}) => {
 
     let tempData = studentProgram.dataValues
     var tempCourses = []
+    var tempSPCs = []
 
+    studentProgram.courses.forEach(course => {
+      let tempSPC = course.dataValues
+      tempSPC.course = course.course.dataValues
+      tempSPCs.push(tempSPC)
+    })
+    
+    tempData.courses = tempSPCs
     tempData.program = studentProgram.program.dataValues
     tempData.program.program_type = studentProgram.program.program_type.dataValues
     tempData.program.agency = studentProgram.program.agency.dataValues
@@ -26,11 +34,11 @@ const getStudentPrograms = async (opt = {}) => {
     if(studentProgram.supervisor) tempData.supervisor = studentProgram.supervisor.name
     else tempData.supervisor = "-"
 
-    if(tempData.status === 0) tempData.status = 'Proposed'
-    else if(tempData.status === 1) tempData.status = 'Accepted'
-    else if(tempData.status === 2) tempData.status = 'Rejected'
-    else if(tempData.status === 3) tempData.status = 'Active'
-    else if(tempData.status === 4) tempData.status = 'Ended'
+    if(tempData.status === 0) tempData.status_name = 'Proposed'
+    else if(tempData.status === 1) tempData.status_name = 'Accepted'
+    else if(tempData.status === 2) tempData.status_name = 'Rejected'
+    else if(tempData.status === 3) tempData.status_name = 'Active'
+    else if(tempData.status === 4) tempData.status_name = 'Ended'
 
     tempDatas.push(tempData)
   }))
@@ -39,6 +47,12 @@ const getStudentPrograms = async (opt = {}) => {
 
 const getAll = async (req, res) => {
   let studentProgramDatas = await getStudentPrograms()
+  res.json(studentProgramDatas)
+}
+
+const getBySupervisor = async (req, res) => {
+  const lecturer_id = req.params.supervisorId
+  let studentProgramDatas = await getStudentPrograms({ where: { lecturer_id } })
   res.json(studentProgramDatas)
 }
 
@@ -92,4 +106,4 @@ const update = async (req, res) => {
   }
 }
 
-module.exports = { getAll, index, create, show, update }
+module.exports = { getAll, getBySupervisor, index, create, show, update }

@@ -1,18 +1,30 @@
 const { DataTypes, Model } = require('sequelize');
 const db = require('../database/db');
+const Course = require('./Course');
 const Lecturer = require('./Lecturer');
 const Program = require('./Program');
 const Student = require('./Student');
+const StudentProgramCourse = require('./StudentProgramCourse');
 
 class StudentProgram extends Model {
   program;
   supervisor;
   student;
+  courses;
 
   async init(){
     this.program = await Program.findOne({ where: { id: this.program_id } })
     this.supervisor = await Lecturer.findOne({ where: { id: this.lecturer_id } })
     this.student = await Student.findOne({ where: { id: this.student_id } })
+
+    let tempCourses = await StudentProgramCourse.findAll({ where: { student_id: this.student_id, program_id: this.program_id } })
+    let tempCoursesData = []
+    await Promise.all(tempCourses.map(async tempCourse => {
+      let course = await Course.findOne({ where: { id: tempCourse.course_id } })
+      tempCourse.course = course
+      tempCoursesData.push(tempCourse)
+    }))
+    this.courses = tempCoursesData
   }
 }
 

@@ -1,10 +1,11 @@
 const { Router } = require('express')
-const { login, logout } = require('../controllers/auth')
+const { login, logout, getAllLecturer } = require('../controllers/auth')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const Admin = require('../models/Admin')
 const Student = require('../models/Student')
 const Lecturer = require('../models/Lecturer')
+const auth = require('../middlewares/auth')
 
 dotenv.config()
 
@@ -27,5 +28,6 @@ router.post('/', (req, res, next) => {
 })
 router.post('/login', login)
 router.post('/logout', logout)
+router.get('/lecturers', auth.checkRole([true]), getAllLecturer)
 
 module.exports = router
