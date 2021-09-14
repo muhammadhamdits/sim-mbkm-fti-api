@@ -51,7 +51,7 @@ Course.init(
         notNull: { msg: "Type cannot be empty, please input this field!" },
         isInt: { msg: "Type must be valid value!" },
         min: { args: 1, msg: "SKS invalid, sks mininum value is 1!" },
-        max: { args: 8, msg: "SKS invalid, sks maximum value is 1!" }
+        max: { args: 8, msg: "SKS invalid, sks maximum value is 8!" }
       }
     }
   },

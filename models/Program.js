@@ -40,6 +40,24 @@ Program.init(
         isBoolean: { msg: "Invalid data type provided! Value must be true or false" }
       }
     },
+    open_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: { 
+        notEmpty: { msg: "Open date cannot be empty, please input this field!" },
+        notNull: { msg: "Open date cannot be empty, please input this field!" },
+        isDate: { msg: "Invalid data type provided! Open date must be date!" },
+      }
+    },
+    close_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: { 
+        notEmpty: { msg: "Close date cannot be empty, please input this field!" },
+        notNull: { msg: "Close date cannot be empty, please input this field!" },
+        isDate: { msg: "Invalid data type provided! Close date must be date!" },
+      }
+    },
     start_date: {
       type: DataTypes.DATEONLY,
       allowNull: false,

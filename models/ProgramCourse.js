@@ -36,6 +36,11 @@ ProgramCourse.init(
         notNull: { msg: "Course cannot be empty, please input this field!" },
         isInt: { msg: "Course invalid! Please input valid data!" }
       }
+    },
+    is_deleted: {
+      type : DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   },
   {

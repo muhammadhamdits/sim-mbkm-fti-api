@@ -58,20 +58,45 @@ const show = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    // console.log(req.body.courses)
     const id = req.params.programId
-    const program = await Program.update(req.body, { where: { id } })
-    await ProgramCourse.destroy({ where: { program_id: id } })
     const courses = req.body.courses
-    datas = []
-    courses.forEach(course_id => {
-      datas.push({
-        program_id: id,
-        course_id
-      })
-    })
-    if(datas.length) await ProgramCourse.bulkCreate(datas)
+    const program = await Program.update(req.body, { where: { id } })
+    // await ProgramCourse.destroy({ where: { program_id: id } })
+    const programCourses = await ProgramCourse.findAll({ where: { program_id: id } })
+    let pCs = programCourses.filter(pC => !courses.find(c => c === pC.course_id ))
+    // console.log(pCs)
+    await Promise.all(pCs.map(async (pC) => {
+      let program_id = id
+      let course_id = pC.course_id.toString()
+      await ProgramCourse.update({ is_deleted: true }, { where: { program_id, course_id } })
+    }))
+    // console.log('b')
+    let cs = courses.filter(c => !programCourses.find(pC => c === pC.course_id && !pC.is_deleted))
+    await Promise.all(cs.map(async c => {
+      if(await ProgramCourse.findOne({ where: { program_id: id, course_id: c } })){
+        // console.log('a')
+        await ProgramCourse.update({ is_deleted: false }, { where: { program_id: id, course_id: c } })
+      }else{
+        // console.log('b')
+        await ProgramCourse.create({ program_id: id, course_id: c })
+      }
+    }))
+    // console.log('c')
+    // res.json(programCourses)
+    // console.log(courses)
+    // datas = []
+    // courses.forEach(course_id => {
+    //   datas.push({
+    //     program_id: id,
+    //     course_id
+    //   })
+    // })
+    // if(datas.length) await ProgramCourse.bulkCreate(datas)
+    // res.json("sss")
     res.json({ success: "Successfully updates program data." })
   } catch (e) {
+    // console.log(e)
     const errorMessage = errorHandling(e)
     res.json(errorMessage)
   }
