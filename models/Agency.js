@@ -16,7 +16,10 @@ Agency.init(
         notNull: { msg: "Name cannot be empty, please input this field!" }
       }
     },
-    address: DataTypes.STRING
+    address: DataTypes.STRING,
+    sector: DataTypes.STRING,
+    description: DataTypes.STRING,
+    website: DataTypes.STRING
   },
   {
     sequelize: db,
