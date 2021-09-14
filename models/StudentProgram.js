@@ -1,16 +1,19 @@
-const { DataTypes, Model } = require('sequelize');
-const db = require('../database/db');
-const Course = require('./Course');
-const Lecturer = require('./Lecturer');
-const Program = require('./Program');
-const Student = require('./Student');
-const StudentProgramCourse = require('./StudentProgramCourse');
+const { DataTypes, Model } = require('sequelize')
+const db = require('../database/db')
+const Comment = require('./Comment')
+const Course = require('./Course')
+const Lecturer = require('./Lecturer')
+const Logbook = require('./Logbook')
+const Program = require('./Program')
+const Student = require('./Student')
+const StudentProgramCourse = require('./StudentProgramCourse')
 
 class StudentProgram extends Model {
-  program;
-  supervisor;
-  student;
-  courses;
+  program
+  supervisor
+  student
+  courses
+  logbooks
 
   async init(){
     this.program = await Program.findOne({ where: { id: this.program_id } })
@@ -25,6 +28,15 @@ class StudentProgram extends Model {
       tempCoursesData.push(tempCourse)
     }))
     this.courses = tempCoursesData
+
+    let tempLogbooks = await Logbook.findAll({ where: { student_id: this.student_id, program_id: this.program_id } })
+    let tempLogbooksData = []
+    await Promise.all(tempLogbooks.map(async tempLogbook => {
+      let comments = await Comment.findAll({ where: { logbook_id: tempLogbook.id } })
+      tempLogbook.comments = comments
+      tempLogbooksData.push(tempLogbook)
+    }))
+    this.logbooks = tempLogbooksData
   }
 }
 

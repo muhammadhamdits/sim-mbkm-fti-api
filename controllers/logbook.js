@@ -8,15 +8,16 @@ const index = (req, res) => {
   res.send(logbooks)
 }
 
-const create = (req, res) => {
+const create = async (req, res) => {
   try {
     const student_id = req.params.studentId
     const program_id = req.params.programId
     const log = req.body.log
-    const logbook = Logbook.create({ student_id, program_id, log })
-    res.send("Sukses")
+    const logbook = await Logbook.create({ student_id, program_id, log })
+    res.json({ success: "Succesfully adds log activity" })
   } catch (e) {
-    res.send(errorHandling(e))
+    // console.log(e)
+    res.json(errorHandling(e))
   }
 }
 

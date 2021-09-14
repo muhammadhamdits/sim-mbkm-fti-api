@@ -11,14 +11,20 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   try {
-    const student_id = req.params.studentId
-    const program_id = req.params.program
-    const date = req.params.date
+    const logbook_id = req.params.logbookId
     const comment = req.body.comment
-    const data = Comment.create({ student_id, program_id, date, comment })
-    res.send("Sukses")
+    let is_lecturer = false
+    if(req.body.is_lecturer) is_lecturer = req.body.is_lecturer
+    const data = Comment.create({ logbook_id, comment, is_lecturer })
+    res.json({ success: "Successfuly inserts comment" })
+    // const student_id = req.params.studentId
+    // const program_id = req.params.program
+    // const date = req.params.date
+    // const comment = req.body.comment
+    // const data = Comment.create({ student_id, program_id, date, comment })
+    // res.send("Sukses")
   } catch (e) {
-    res.send(errorHandling(e))
+    res.json(errorHandling(e))
   }
 }
 

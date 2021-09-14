@@ -30,14 +30,16 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    console.log(req.body)
     const student_id = req.params.studentId
     const program_id = req.params.programId
     const course_id = req.params.courseId
-    const studentProgramCourse = await StudentProgramCourse.findOne({ where: { student_id, program_id, course_id } })
-    if(studentProgramCourse[0] === 0) res.send("Gagal")
-    else res.send({ success: "Sukses" })
+    const studentProgramCourse = await StudentProgramCourse.update(req.body, { where: { student_id, program_id, course_id } })
+    if(studentProgramCourse[0] === 0) res.json({ error: 'Failed' })
+    else res.json({ success: "Successfully confirm program course data" })
   } catch (e) {
-    res.send(errorHandling(e))
+    // console.log(e)
+    res.json(errorHandling(e))
   }
 }
 

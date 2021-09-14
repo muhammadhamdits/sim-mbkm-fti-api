@@ -10,9 +10,22 @@ const getStudentPrograms = async (opt = {}) => {
     await studentProgram.init()
     await studentProgram.program.init()
 
+    // console.log(studentProgram)
+
     let tempData = studentProgram.dataValues
     var tempCourses = []
     var tempSPCs = []
+    var tempLBs = []
+
+    studentProgram.logbooks.forEach(logbook => {
+      let tempLB = logbook.dataValues
+      let tempComments = []
+      logbook.comments.forEach(comment => {
+        tempComments.push(comment.dataValues)
+      })
+      tempLB.comments = tempComments
+      tempLBs.push(tempLB)
+    })
 
     studentProgram.courses.forEach(course => {
       let tempSPC = course.dataValues
@@ -20,6 +33,7 @@ const getStudentPrograms = async (opt = {}) => {
       tempSPCs.push(tempSPC)
     })
     
+    tempData.logbooks = tempLBs
     tempData.courses = tempSPCs
     tempData.program = studentProgram.program.dataValues
     tempData.program.program_type = studentProgram.program.program_type.dataValues
