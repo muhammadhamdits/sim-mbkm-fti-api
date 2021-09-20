@@ -50,7 +50,8 @@ Logbook.init(
         notEmpty: { msg: "Program cannot be empty, please input this field!" },
         notNull: { msg: "Program cannot be empty, please input this field!" }
       }
-    }
+    },
+    file: DataTypes.STRING
   },
   {
     sequelize: db,

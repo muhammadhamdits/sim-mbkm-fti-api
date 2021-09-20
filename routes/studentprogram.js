@@ -9,6 +9,9 @@ router.get('/supervisor-student-program/:supervisorId', studentprogram.getBySupe
 router.get('/student/:studentId/program', auth.checkRole(["Student"]), studentprogram.index)
 router.post('/student/:studentId/program', auth.checkRole(["Student"]), studentprogram.create)
 router.get('/student/:studentId/program/:programId', auth.checkRole(["Student"]), studentprogram.show)
-router.put('/student/:studentId/program/:programId', auth.checkRole(["Student", true]), studentprogram.update)
+router.put('/student/:studentId/program/:programId', studentprogram.update)
+router.get('/student/:studentId/program/:programId/:fieldName/download', studentprogram.download)
+// router.put('/student/:studentId/program/:programId', auth.checkRole(["Student", true]), studentprogram.update)
+// router.put('')
 
 module.exports = router

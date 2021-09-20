@@ -1,6 +1,7 @@
 const Program = require('../models/Program')
 const { errorHandling } = require('../database/utils')
 const ProgramCourse = require('../models/ProgramCourse')
+const moment = require('moment')
 
 const index = async (req, res) => {
   const programs = await Program.findAll()
@@ -20,6 +21,12 @@ const index = async (req, res) => {
     tempDataObject.program_type = program.program_type.dataValues
     tempDataObject.agency = program.agency.dataValues
     tempDataObject.courses = tempCourses
+
+    let todayDate = moment()
+    let openDate = moment(tempDataObject.open_date, "YYYY-MM-DD")
+    let closeDate = moment(tempDataObject.close_date, "YYYY-MM-DD")
+
+    tempDataObject.registStatus = todayDate.isBetween(openDate, closeDate)
 
     allPrograms.push(tempDataObject)
   }))

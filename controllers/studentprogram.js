@@ -2,6 +2,9 @@ const StudentProgram = require('../models/StudentProgram')
 const { errorHandling } = require('../database/utils')
 const Program = require('../models/Program')
 const Student = require('../models/Student')
+const formidable = require('formidable')
+const mv = require('mv')
+const moment = require('moment')
 
 const getStudentPrograms = async (opt = {}) => {
   const studentPrograms = await StudentProgram.findAll(opt)
@@ -53,6 +56,12 @@ const getStudentPrograms = async (opt = {}) => {
     else if(tempData.status === 2) tempData.status_name = 'Rejected'
     else if(tempData.status === 3) tempData.status_name = 'Active'
     else if(tempData.status === 4) tempData.status_name = 'Ended'
+
+    let todayDate = moment()
+    let openDate = moment(tempData.program.open_date, "YYYY-MM-DD")
+    let closeDate = moment(tempData.program.close_date, "YYYY-MM-DD")
+
+    tempData.program.registStatus = todayDate.isBetween(openDate, closeDate)
 
     tempDatas.push(tempData)
   }))
@@ -111,13 +120,55 @@ const update = async (req, res) => {
   try {
     const student_id = req.params.studentId
     const program_id = req.params.programId
-    const studentProgram = await StudentProgram.update(req.body, { where: { student_id, program_id } })
-    if(studentProgram[0] === 0) res.send({ error: `Failed to update data. Data not found or no changes submitted!` })
-    else res.send({ success: "Successfully updates student program data." })
+    if(Object.keys(req.body).length){
+      const studentProgram = await StudentProgram.update(req.body, { where: { student_id, program_id } })
+      if(studentProgram[0] === 0) res.send({ error: `Failed to update data. Data not found or no changes submitted!` })
+      else res.send({ success: "Successfully updates student program data." })
+    }else{
+      let form = formidable.IncomingForm()
+  
+      form.parse(req, async (err, fields, files) => {
+        let field = Object.keys(files)[0]
+        let file = Object.values(files)[0]
+
+        const studentProgram = await StudentProgram.update(
+          { [field]: file.name  },
+          { where: { student_id, program_id } }
+        )
+      
+        let oldPath = file.path
+        let newName = `${student_id}-${program_id}-${file.name}`
+        let newPath = `${__dirname}/../public/${field}/${newName}`
+        
+        mv(oldPath, newPath, (err) => {
+          if(err) throw err
+        })
+
+        res.json({ success: "Succesfully Uploads File" })
+      })
+    }
   } catch (e) {
     const errorMessage = errorHandling(e)
     res.send(errorMessage)
   }
 }
 
-module.exports = { getAll, getBySupervisor, index, create, show, update }
+const download = async (req, res) => {
+  const student_id = req.params.studentId
+  const program_id = req.params.programId
+  const fieldName = req.params.fieldName
+
+  let studentProgram = await StudentProgram.findOne({ where: { student_id, program_id } })
+
+  let dirPath = `${__dirname}/../public/${fieldName}/`
+  let fileName = `${student_id}-${program_id}-${studentProgram[fieldName]}`
+  res.download(dirPath + fileName, fileName, (err) => {
+    if (err) {
+      res.status(500).send({
+        message: "Could not download the file. " + err,
+      })
+    }
+  })
+}
+
+module.exports = { getAll, getBySupervisor, index, create, show, update, download }
