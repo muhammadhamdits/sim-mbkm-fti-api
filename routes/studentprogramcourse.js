@@ -8,5 +8,6 @@ router.get('/student/:studentId/program/:programId/course', auth.checkRole(["Stu
 router.post('/student/:studentId/program/:programId/course', auth.checkRole(["Student"]), studentprogramcourse.create)
 router.put('/student/:studentId/program/:programId/course/:courseId', studentprogramcourse.update)
 router.delete('/student/:studentId/program/:programId/course/:courseId', auth.checkRole(["Student"]), studentprogramcourse.destroy)
+router.put('/student/:studentId/program/:programId/course', studentprogramcourse.bulkUpdate)
 
 module.exports = router

@@ -52,4 +52,16 @@ const destroy = async (req, res) => {
   else res.json({ success: 'Succesfully remove course' })
 }
 
-module.exports = { index, create, update, destroy }
+const bulkUpdate = async (req, res) => {
+  const student_id = req.params.studentId
+  const program_id = req.params.programId
+  await req.body.forEach(async (data) => {
+    let is_accepted = data.is_accepted
+    let course_id = data.course_id
+    await StudentProgramCourse.update({ is_accepted }, { where: { student_id, program_id, course_id } })
+  })
+  // console.log(req.body)
+  res.json({ success: 'Succesfully updates course' })
+}
+
+module.exports = { index, create, update, destroy, bulkUpdate }
